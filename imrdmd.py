@@ -25,6 +25,11 @@ class DynamicModeDecomposition():
     def omega_approx(self, beta):
         """Return an approximate omega value for given beta. Equation (5) from Gavish 2014."""
         return 0.56 * beta**3 - 0.95 * beta**2 + 1.82 * beta + 1.43
+    
+    def lambda_star(self, beta):
+        """Return lambda star for given beta. Equation (11) from Gavish 2014."""
+        return np.sqrt(2 * (beta + 1) + (8 * beta) / 
+                    (beta + 1 + np.sqrt(beta**2 + 14 * beta + 1)))
 
 
     def svht(self, X, sv=None, sigma=None):
@@ -49,7 +54,7 @@ class DynamicModeDecomposition():
             omega_approx = self.omega_approx(beta)
             return np.median(sv) * omega_approx
         else:
-            return lambda_star(beta) * np.sqrt(n) * sigma
+            return self.lambda_star(beta) * np.sqrt(n) * sigma
 
     
     def addblock_svd_update(self, U, S, V, B, ori=[]): 
